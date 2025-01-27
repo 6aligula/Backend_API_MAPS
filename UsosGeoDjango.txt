@@ -1,0 +1,86 @@
+En un objeto GeoJSON del tipo `FeatureCollection`, puedes almacenar una amplia gama de datos geoespaciales, cada uno encapsulado en un objeto `Feature` que puede tener su propia geometría y conjunto de propiedades. Este formato es extremadamente versátil y se puede usar para representar prácticamente cualquier tipo de dato geográfico. Aquí hay algunas ideas sobre lo que se puede incluir:
+
+### Tipos de Geometría
+
+- **Puntos (Point)**: Ubicaciones individuales en el mapa, como la que ya has mostrado. Se pueden usar para marcar lugares específicos, como ciudades, eventos o cualquier otra cosa con una ubicación puntual.
+
+- **Líneas (LineStrings)**: Secuencias de puntos que juntos forman líneas. Pueden representar rutas, carreteras, ríos, o cualquier otro elemento lineal en un mapa.
+
+- **Polígonos (Polygons)**: Series de puntos que forman un área cerrada. Son útiles para representar límites, como los de un país, una ciudad, un parque, o incluso áreas más pequeñas, como los límites de un campus universitario o un distrito electoral.
+
+- **MultiPuntos (MultiPoint)**, **MultiLíneas (MultiLineString)**, y **MultiPolígonos (MultiPolygon)**: Versiones de las geometrías anteriores que permiten agrupar múltiples instancias del mismo tipo de geometría en un único objeto `Feature`. Por ejemplo, podrías tener un `MultiPoint` para representar todas las ubicaciones de una cadena de tiendas.
+
+### Datos en las Propiedades
+
+El campo `properties` de cada `Feature` es un objeto que puede contener cualquier tipo de dato JSON válido. Esto te da una flexibilidad enorme para incluir información adicional sobre cada `Feature`. Por ejemplo:
+
+- **Información Descriptiva**: Nombre, descripción, categoría, tipo de lugar, etc.
+- **Datos de Identificación**: ID externos, códigos de referencia, etc.
+- **Información Temporal**: Fechas de eventos, horarios de apertura/cierre, etc.
+- **Datos Cuantitativos**: Población, área, distancia, altitud, etc.
+- **Enlaces a Recursos Externos**: URLs a páginas web, imágenes, documentos.
+- **Datos de Contacto**: Direcciones, números de teléfono, correos electrónicos.
+- **Metadatos**: Información sobre la fuente de los datos, precisión, fecha de última actualización, etc.
+
+### Ejemplo Extendido
+
+Aquí hay un ejemplo ampliado de un objeto `FeatureCollection` que incluye múltiples tipos de geometría y 
+datos en las propiedades:
+
+```json
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-3.70379, 40.416775]
+            },
+            "properties": {
+                "name": "Plaza Mayor",
+                "category": "Plaza histórica",
+                "description": "Un importante punto de encuentro en Madrid desde el siglo XVII."
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [-3.702561, 40.416497],
+                    [-3.704173, 40.415527]
+                ]
+            },
+            "properties": {
+                "name": "Ruta del Tapas",
+                "description": "Una ruta popular para disfrutar de las tapas en Madrid."
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [-3.703321, 40.417146],
+                        [-3.703789, 40.416762],
+                        [-3.704247, 40.417146],
+                        [-3.703789, 40.417530],
+                        [-3.703321, 40.417146]
+                    ]
+                ]
+            },
+            "properties": {
+                "name": "Zona Peatonal",
+                "description": "Área designada solo para peatones."
+            }
+        }
+    ]
+}
+```
+
+Este ejemplo muestra cómo un `FeatureCollection` puede contener una variedad de `Features` con 
+diferentes tipos de geometrías y un conjunto rico de propiedades descriptivas. La clave está en 
+cómo estructuras tus datos para maximizar la utilidad y accesibilidad de la información geoespacial 
+que estás representando.

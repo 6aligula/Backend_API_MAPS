@@ -1,0 +1,10 @@
+Django Shell:
+
+Puedes usar Django shell para crear objetos directamente a través del ORM. Aquí hay un ejemplo básico:
+python
+Copiar código
+from django.contrib.auth.models import User
+from backend.models import Factura, CaracteristicasParcela
+user = User.objects.first()  # Asume que tienes un usuario
+parcela = CaracteristicasParcela.objects.first()  # Asume que tienes una parcela
+factura = Factura.objects.create(parcela=parcela, numero_factura=1, estado='Pendiente')

@@ -1,0 +1,69 @@
+Estoy realizando una app django con geodjango, el tema de los usuarios ya lo tengo cubierto, ya tengo todo lo necesario para 
+trabajar con geodjango, eso quiere decir base de datos, etc.
+
+Este es el codigo que quiero probar desde postman:
+
+modelo:
+from django.db import models
+
+from django.contrib.gis.db import models
+
+class Location(models.Model):
+    name = models.CharField(max_length=255)
+    coordinates = models.PointField()
+    
+    def __str__(self):
+        return self.name
+
+geo_urls.py:
+from django.urls import path
+from backend.views import geo_views as views
+
+urlPatterns = [
+    path('', views.getLocations, name="locations"),
+    # path('add/', views.addLocation, name="location-add"),
+    # path('<str:pk>/', views.getLocation, name="location"),
+    # path('update/<str:pk>/', views.updateLocation, name="location-update"),
+    # path('delete/<str:pk>/', views.deleteLocation, name="location-delete"),
+]
+
+geo_views.py:
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.exceptions import AuthenticationFailed
+
+from rest_framework.viewsets import ReadOnlyModelViewSet
+from .models import Location
+from .serializers import LocationSerializer
+
+class LocationViewSet(ReadOnlyModelViewSet):
+    queryset = Location.objects.all()
+    serializer_class = LocationSerializer
+
+serializers.py:
+from rest_framework import serializers
+from django.contrib.auth.models import User
+from rest_framework_simplejwt.tokens import RefreshToken
+
+from rest_framework_gis.serializers import GeoFeatureModelSerializer
+from .models import Location
+class LocationSerializer(GeoFeatureModelSerializer):
+    class Meta:
+        model = Location
+        geo_field = "coordinates"
+        fields = ('id', 'name', 'coordinates')
+
+y por ultimo urls.py:
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/users/', include('backend.urls.user_urls')),
+    path('api/geo/', include('backend.urls.geo_urls')),
+]
+
+¿falta algo por codificar no?
+
